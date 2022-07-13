@@ -1,3 +1,21 @@
+# Deploying Kafdrop to Openshift
+
+This repo tkes the original Kafdrop and extends it to deploy it on Openshift.
+
+   * Integration with Kafka Clusters anaged by the AMQStreams/Strimzi operator.
+   * Authentication using the openshift security domain and oauth proxy
+   * Deployment be Helm template.
+
+
+## How-To deploy
+
+   1. build code
+      1. mvn clean package
+      2. build image
+      3. push image to registry
+      4. populate Helm chart values file
+      5. deploy helm template.
+
 <img src="https://raw.githubusercontent.com/wiki/obsidiandynamics/kafdrop/images/kafdrop-logo.png" width="90px" alt="logo"/> Kafdrop – Kafka Web UI &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fobsidiandynamics%2Fkafdrop&text=Get%20Kafdrop%20%E2%80%94%20a%20web-based%20UI%20for%20viewing%20%23ApacheKafka%20topics%20and%20browsing%20consumers%20)
 ===
 
