@@ -1,0 +1,16 @@
+name: kafdrop
+
+image:
+  registry: quay.io
+  repository: justindav1s
+  name: kafdrop
+  version: 1.0.0
+
+config:
+  loglevel: INFO
+  kafka:
+    cluster:
+      name:
+    user:
+
+

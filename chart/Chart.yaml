@@ -1,0 +1,7 @@
+apiVersion: v2 #helm v3
+description: A Helm chart for residency deployment of Kafdrop
+name: residency-kafdrop
+version: 1.0.1
+home: https://github.com/cariad-cloud/residency-Kafdrop.git
+maintainers:
+- name: non-cariad-users
