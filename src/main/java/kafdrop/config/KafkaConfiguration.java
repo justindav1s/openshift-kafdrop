@@ -14,6 +14,11 @@ import org.springframework.stereotype.*;
 @ConfigurationProperties(prefix = "kafka")
 @Data
 public final class KafkaConfiguration {
+  private static final String KAFKA_SSL_TRUSTSTORE_CREDENTIALS_ENV_KEY = "KAFKA_SSL_TRUSTSTORE_CREDENTIALS";
+  private static final String KAFKA_SSL_TRUSTSTORE_CREDENTIALS_PROP_KEY = "ssl.truststore.password";
+  private static final String KAFKA_SSL_KEYSTORE_CREDENTIALS_ENV_KEY = "KAFKA_SSL_KEYSTORE_CREDENTIALS";
+  private static final String KAFKA_SSL_KEYSTORE_CREDENTIALS_PROP_KEY = "ssl.keystore.password";
+
   private static final Logger LOG = LoggerFactory.getLogger(KafkaConfiguration.class);
 
   private String brokerConnect;
@@ -58,6 +63,19 @@ public final class KafkaConfiguration {
         throw new KafkaConfigurationException(e);
       }
       properties.putAll(propertyOverrides);
+
+      String keystorePassword = System.getenv(KAFKA_SSL_KEYSTORE_CREDENTIALS_ENV_KEY);
+      if (!keystorePassword.isEmpty())
+        properties.put(KAFKA_SSL_KEYSTORE_CREDENTIALS_PROP_KEY, keystorePassword);
+      
+        String truststorePassword = System.getenv(KAFKA_SSL_TRUSTSTORE_CREDENTIALS_ENV_KEY);
+        if (!truststorePassword.isEmpty())
+          properties.put(KAFKA_SSL_TRUSTSTORE_CREDENTIALS_PROP_KEY, truststorePassword);
+
+      for (Object key : properties.keySet()) {
+        LOG.debug(key + " : " + properties.get(key));
+      }
+
     }
   }
 }
