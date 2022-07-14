@@ -19,32 +19,14 @@ spec:
     spec:
       serviceAccountName: {{ .Values.name }}
       containers:
-        - name: oauth-proxy
-          image: openshift/oauth-proxy:latest
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-          - name: {{ .Values.name }}-oauth-proxy-tls
-            mountPath: /etc/pki/tls/private 
-          ports:
-          - containerPort: 8443
-            name: public
-          args:
-          - --https-address=:8443
-          - --provider=openshift
-          - --openshift-service-account={{ .Values.name }}
-          - --upstream=http://0.0.0.0:9000
-          - --cookie-secret=QWERTYUY
-          - --tls-cert=/etc/pki/tls/private/tls.crt
-          - --tls-key=/etc/pki/tls/private/tls.key
-          - --ssl-insecure-skip-verify=true
-        - resources:
+        - name: {{ .Values.name }}
+          resources:
             limits:
               cpu: '400m'
               memory: 1Gi
             requests:
               cpu: '200m'
               memory: 512Mi
-          name: quarkus
           ports:
             - name: http
               containerPort: 9000
@@ -57,15 +39,44 @@ spec:
               protocol: TCP
           imagePullPolicy: Always
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
+          env:
+            - name: KAFKA_SSL_TRUSTSTORE_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  key: ca.password
+                  name: {{ .Values.config.kafka.cluster.name }}-cluster-ca-cert
+            - name: KAFKA_SSL_KEYSTORE_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  key: user.password
+                  name: {{ .Values.config.kafka.user }}
           volumeMounts:
-          - name: {{ .Values.name }}-kafka-properties
-            mountPath: /deployments/config
-          - name: {{ .Values.name }}-application-yaml
-            mountPath: /deployments/resources
-          - name: {{ .Values.config.kafka.user }}-keystore
-            mountPath: /deployments/keystore            
-          - name: {{ .Values.config.kafka.cluster.name }}-truststore
-            mountPath: /deployments/truststore
+            - name: {{ .Values.name }}-kafka-properties
+              mountPath: /deployments/config
+            - name: {{ .Values.name }}-application-yaml
+              mountPath: /deployments/resources
+            - name: {{ .Values.config.kafka.user }}-keystore
+              mountPath: /deployments/keystore            
+            - name: {{ .Values.config.kafka.cluster.name }}-truststore
+              mountPath: /deployments/truststore
+        - name: {{ .Values.name }}-oauth-proxy-tls
+          image: openshift/oauth-proxy:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: {{ .Values.name }}-oauth-proxy-tls
+              mountPath: /etc/pki/tls/private          
+          ports:
+          - containerPort: 8443
+            name: public
+          args:
+            - --https-address=:8443
+            - --provider=openshift
+            - --openshift-service-account={{ .Values.name }}
+            - --upstream=http://0.0.0.0:9000
+            - --cookie-secret=QWERTYUY
+            - --tls-cert=/etc/pki/tls/private/tls.crt
+            - --tls-key=/etc/pki/tls/private/tls.key
+            - --ssl-insecure-skip-verify=true    
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
