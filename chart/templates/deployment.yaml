@@ -62,9 +62,9 @@ spec:
             mountPath: /deployments/config
           - name: {{ .Values.name }}-application-yaml
             mountPath: /deployments/resources
-          - name: sim-reg-user-keystore
+          - name: {{ .Values.config.kafka.user }}-keystore
             mountPath: /deployments/keystore            
-          - name: wc-test-kafka-cluster-truststore
+          - name: {{ .Values.config.kafka.cluster.name }}-truststore
             mountPath: /deployments/truststore
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
@@ -76,14 +76,14 @@ spec:
           configMap:
             name: {{ .Values.name }}-application-yaml
         - name: {{ .Values.name }}-kafka-properties
-          secret:
-            secretName: {{ .Values.name }}-kafka-properties
+          configMap:
+            name: {{ .Values.name }}-kafka-properties
         - name: {{ .Values.config.kafka.user }}-keystore
           secret:
             secretName: {{ .Values.config.kafka.user }}
         - name: {{ .Values.config.kafka.cluster.name }}-truststore
           secret:
-            secretName: {{ .Values.config.kafka.cluster.name }}-truststore 
+            secretName: {{ .Values.config.kafka.cluster.name }}-cluster-ca-cert
         - name: {{ .Values.name }}-oauth-proxy-tls
           secret:
             secretName: {{ .Values.name }}-oauth-proxy-tls

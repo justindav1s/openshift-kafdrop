@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  kafka.properties: |-
+    bootstrap.servers={{ .Values.config.kafka.cluster.name }}-{{ .Values.config.kafka.cluster.domain }}:443
+    security.protocol=SSL
+    ssl.truststore.location=truststore/ca.p12
+    ssl.truststore.password=CpavPd2l441N
+    ssl.truststore.type=PKCS12
+    ssl.keystore.location=keystore/user.p12
+    ssl.keystore.password=WeN2U5kvB6qN
+    ssl.keystore.type=PKCS12
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: {{ .Values.name }}-kafka-properties

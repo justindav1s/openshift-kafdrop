@@ -8,16 +8,12 @@ if [[ "$BUILD_TOOL" != "podman" ]] && [[ "$BUILD_TOOL" != "docker" ]]; then
     exit 1
 fi
 
-IMAGE=sim-data-handler
-REGISTRY_HOST=residencyregistry.azurecr.io
-REPO=sim-data-handler
+IMAGE=kafdrop
+REGISTRY_HOST=${QUAYIO_HOST}
+REPO=justindav1s
 VERSION=latest
-USER=00000000-0000-0000-0000-000000000000
 
-TOKEN=$(az acr login --name residencyregistry --expose-token | jq -r .accessToken)
-echo TOKEN : $TOKEN
-# az acr login --name residencyregistry
-$BUILD_TOOL login ${REGISTRY_HOST} -u ${USER} -p $TOKEN
+$BUILD_TOOL login ${REGISTRY_HOST} -u ${QUAYIO_USER} -p ${QUAYIO_PASSWORD}
 
 TAG=$REGISTRY_HOST/$REPO/$IMAGE:$VERSION
 

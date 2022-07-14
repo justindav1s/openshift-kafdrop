@@ -4,13 +4,14 @@ image:
   registry: quay.io
   repository: justindav1s
   name: kafdrop
-  version: 1.0.0
+  version: latest
 
 config:
   loglevel: INFO
   kafka:
     cluster:
-      name:
-    user:
+      domain: kafka-bootstrap-kafdrop.apps.sno.openshiftlabs.net
+      name: kafka-cluster
+    user: kafdrop-kafka-user
 
 

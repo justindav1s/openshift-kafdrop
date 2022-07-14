@@ -8,7 +8,7 @@ if [[ "$BUILD_TOOL" != "podman" ]] && [[ "$BUILD_TOOL" != "docker" ]]; then
     exit 1
 fi
 
-IMAGE=sim-data-handler
+IMAGE=kafdrop
 
 $BUILD_TOOL build -t ${IMAGE} -f ../Dockerfile ..
 
