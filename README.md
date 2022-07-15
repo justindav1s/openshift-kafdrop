@@ -4,7 +4,7 @@ This repo tkes the original Kafdrop and extends it to deploy it on Openshift.
 
    * Integration with Kafka Clusters anaged by the AMQStreams/Strimzi operator.
    * Authentication using the openshift security domain and oauth proxy
-   * Deployment be Helm template.
+   * Deployment with Helm template.
 
 
 ## Code chages to allow secrets to be extracted from environment vars at deploy time 
