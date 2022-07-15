@@ -31,7 +31,6 @@ spec:
         tls: true
         type: route
       - authentication:
-          enablePlain: true
           type: tls
         name: mtls
         port: 9095
