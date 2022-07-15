@@ -7,14 +7,60 @@ This repo tkes the original Kafdrop and extends it to deploy it on Openshift.
    * Deployment be Helm template.
 
 
+## Code chages to allow secrets to be extracted from environment vars at deploy time 
+
+
+```
+index cd34f49..f5d1989 100644
+--- a/src/main/java/kafdrop/config/KafkaConfiguration.java
++++ b/src/main/java/kafdrop/config/KafkaConfiguration.java
+@@ -14,6 +14,11 @@ import org.springframework.stereotype.*;
+ @ConfigurationProperties(prefix = "kafka")
+ @Data
+ public final class KafkaConfiguration {
++  private static final String KAFKA_SSL_TRUSTSTORE_CREDENTIALS_ENV_KEY = "KAFKA_SSL_TRUSTSTORE_CREDENTIALS";
++  private static final String KAFKA_SSL_TRUSTSTORE_CREDENTIALS_PROP_KEY = "ssl.truststore.password";
++  private static final String KAFKA_SSL_KEYSTORE_CREDENTIALS_ENV_KEY = "KAFKA_SSL_KEYSTORE_CREDENTIALS";
++  private static final String KAFKA_SSL_KEYSTORE_CREDENTIALS_PROP_KEY = "ssl.keystore.password";
++
+   private static final Logger LOG = LoggerFactory.getLogger(KafkaConfiguration.class);
+ 
+   private String brokerConnect;
+@@ -58,6 +63,19 @@ public final class KafkaConfiguration {
+         throw new KafkaConfigurationException(e);
+       }
+       properties.putAll(propertyOverrides);
++
++      String keystorePassword = System.getenv(KAFKA_SSL_KEYSTORE_CREDENTIALS_ENV_KEY);
++      if (!keystorePassword.isEmpty())
++        properties.put(KAFKA_SSL_KEYSTORE_CREDENTIALS_PROP_KEY, keystorePassword);
++      
++        String truststorePassword = System.getenv(KAFKA_SSL_TRUSTSTORE_CREDENTIALS_ENV_KEY);
++        if (!truststorePassword.isEmpty())
++          properties.put(KAFKA_SSL_TRUSTSTORE_CREDENTIALS_PROP_KEY, truststorePassword);
++
++      for (Object key : properties.keySet()) {
++        LOG.debug(key + " : " + properties.get(key));
++      }
++
+     }
+   }
+ }
+
+```
 ## How-To deploy
 
    1. build code
       1. mvn clean package
       2. build image
       3. push image to registry
-      4. populate Helm chart values file
-      5. deploy helm template.
+      4. populate Helm chart values file : [values.yml](chart/values.yaml)
+      5. deploy helm template :
+
+```
+cd chart && helm template . | oc apply -f -
+```
+
 
 <img src="https://raw.githubusercontent.com/wiki/obsidiandynamics/kafdrop/images/kafdrop-logo.png" width="90px" alt="logo"/> Kafdrop – Kafka Web UI &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fobsidiandynamics%2Fkafdrop&text=Get%20Kafdrop%20%E2%80%94%20a%20web-based%20UI%20for%20viewing%20%23ApacheKafka%20topics%20and%20browsing%20consumers%20)
 ===
