@@ -47,9 +47,6 @@ data:
       truststoreFile: "${KAFKA_TRUSTSTORE_FILE:kafka.truststore.jks}"
       propertiesFile : config/kafka.properties
       keystoreFile: "${KAFKA_KEYSTORE_FILE:kafka.keystore.jks}"
-      ssl:
-        trust-store-password: ${KAFKA_SSL_TRUSTSTORE_CREDENTIALS}
-        key-store-password: ${KAFKA_SSL_KEYSTORE_CREDENTIALS}
 kind: ConfigMap
 metadata:
   creationTimestamp: null

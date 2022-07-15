@@ -1,3 +1,4 @@
+{{- if .Values.deploy.kafka }}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
@@ -46,3 +47,4 @@ spec:
     storage:
       size: 5Gi
       type: persistent-claim
+{{ end }}      

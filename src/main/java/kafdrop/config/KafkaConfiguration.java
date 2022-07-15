@@ -72,10 +72,6 @@ public final class KafkaConfiguration {
         if (!truststorePassword.isEmpty())
           properties.put(KAFKA_SSL_TRUSTSTORE_CREDENTIALS_PROP_KEY, truststorePassword);
 
-      for (Object key : properties.keySet()) {
-        LOG.debug(key + " : " + properties.get(key));
-      }
-
     }
   }
 }

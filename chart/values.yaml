@@ -6,12 +6,15 @@ image:
   name: kafdrop
   version: latest
 
+deploy:
+  kafka: false
+
 config:
   loglevel: INFO
   kafka:
     cluster:
       domain: kafka-bootstrap-kafdrop.apps.sno.openshiftlabs.net
-      name: kafka-cluster
+      name: test-cluster
     user: kafdrop-kafka-user
 
 
