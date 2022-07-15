@@ -2,7 +2,7 @@
 
 This repo takes the original Kafdrop and extends it to deploy it on Openshift.
 
-   * Integration with Kafka Clusters managed by the AMQStreams/Strimzi operator.
+   * Integration with Kafka Clusters managed by the AMQStreams/Strimzi operator, where mtls user authentication has been tutned on.
    * Authentication using the openshift security domain and oauth proxy.
    * Deployment with a Helm template.
 
