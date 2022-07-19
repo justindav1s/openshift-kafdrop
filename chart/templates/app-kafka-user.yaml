@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
   annotations:
-  name: {{ .Values.config.kafka.kafdrop.user }}
+  name: {{ .Values.config.kafka.user }}
   labels:
     strimzi.io/cluster: {{ .Values.config.kafka.cluster.name }}
 spec:

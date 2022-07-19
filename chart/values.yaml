@@ -7,14 +7,16 @@ image:
   version: latest
 
 deploy:
-  kafka: false
+  kafka: true
 
 config:
   loglevel: INFO
   kafka:
     cluster:
-      domain: kafka-bootstrap-kafdrop.apps.sno.openshiftlabs.net
-      name: test-cluster
-    user: kafdrop-kafka-user
+      domain: kafka-bootstrap-events.apps.sno.openshiftlabs.net
+      name: kafka
+    user: app-user
+    kafdrop:
+     user: kafdrop-kafka-user
 
 
